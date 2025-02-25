@@ -12,11 +12,12 @@ UPLOAD_FOLDER = "uploads" # アップロードされた画像を保存するフ�
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif']) # アップロードを許可する拡張子
 
 app = Flask(__name__)
+app.secret_key = "53CR3T"
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-model = load_model('./model.keras') # 学習済みモデルをロード
+model = load_model('./number.keras') # 学習済みモデルをロード
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -29,9 +30,8 @@ def upload_file():
 
         file = request.files['file']
         if file.filename == '':
-            flash('ファイルがありません')
+            flash('ファイル名がありません')
             return redirect(request.url)
-
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename) # サニタイズ: ファイル名にある危険な文字列を無効化
             file.save(os.path.join(UPLOAD_FOLDER, filename))
@@ -49,8 +49,8 @@ def upload_file():
             # 最後にアップロードされた画像を削除
             os.remove(filepath)
         else:
-            flash('有効な画像ファイルの拡張子ではありません')
-            return redirect(request.url) # リクエスト元のURLにリダイレクト
+            flash('画像ファイルではありません')
+            return redirect(request.url)
 
     return render_template("index.html",answer=pred_answer)
 
@@ -58,5 +58,5 @@ if __name__ == "__main__":
     # ローカル実行時
     #app.run()
     # 外部公開設定時
-    port = int(os.environ.get('PORT', 8080)) # Renderで使えるポート番号を取得（未設定時は8080）
-    app.run(host ='0.0.0.0',port = port) # サーバーを外部からも利用可能にする
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host ='0.0.0.0',port = port)

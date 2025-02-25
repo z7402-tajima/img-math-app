@@ -8,9 +8,9 @@ header {
 }
 
 .header-logo {
-    color: #fff;
+    color: #FFFFFF;
     font-size: 25px;
-    margin: 15px 25px; /* top&bottom、right&leftの順番 */
+    margin: 15px 25px;
 }
 
 .header_img {
@@ -20,28 +20,22 @@ header {
 
 .main {
     height: 370px;
+    text-align: center;
 }
 
 h2 {
     color: #444444;
     margin: 90px 0px;
-    text-align: center;
-}
-
-p {
-    color: #444444;
-    margin: 70px 0px 30px 0px; /* topから時計回りにright、bottom、leftの順番 */
-    text-align: center;
 }
 
 .answer {
     color: #444444;
-    margin: 70px 0px 30px 0px;
-    text-align: center;
+    margin: 30px 0px 30px 0px;
 }
 
-form {
-    text-align: center;
+.errmsg {
+    color: #FF0000;
+    margin: 30px 0px 30px 0px;
 }
 
 footer {

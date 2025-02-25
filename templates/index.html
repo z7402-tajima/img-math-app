@@ -21,7 +21,17 @@
             <input class="file_choose" type="file" name="file">
             <input class="btn" value="submit!" type="submit">
         </form>
+        {% with messages = get_flashed_messages() %}
+            <div class="errmsg">
+            {% for message in messages %}
+                <p>
+                    <font color="red">{{message}}</font>
+                </p>
+            {% endfor %}
+            </div>
+        {% endwith %}
     </div>
+    
 
     <footer>
         <img class="footer_img" src="https://aidemyexstorage.blob.core.windows.net/aidemycontents/1621500180546399.png" alt="Aidemy">
