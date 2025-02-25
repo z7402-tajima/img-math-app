@@ -1,0 +1,31 @@
+<!--空のhtml拡張子ファイルを開き、[!][TAB]の順にキーを押すと以下の基本構造が出力される-->
+<!DOCTYPE html> <!--DOCTYPE宣言: テキストファイルはHTMLだとブラウザに説明するための宣言-->
+<html lang="ja"> <!--日本語"ja"に書き換える-->
+<head>
+    <meta charset="UTF-8"> <!--ファイルの文字コードと合わせる-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--きちんと正しく表示させるためのおまじない-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> <!--きちんと正しく表示させるためのおまじない-->
+    <title>Number Classifier</title> <!--ページタイトル（ブラウザのタブ上に現れる）-->
+    <link rel="stylesheet" href="./static/stylesheet.css"> <!--外部CSS読込（自動で補完されない）-->
+</head>
+<body>
+    <header>   
+        <img class="header_img" src="https://aidemyexstorage.blob.core.windows.net/aidemycontents/1621500180546399.png" alt="Aidemy">
+        <a class="header-logo" href="#">Number Classifier</a>
+    </header>
+
+    <div class="main">    
+        <h2>送信された画像の数字をAIが識別します</h2>
+        <div class="answer">{{answer}}</div>
+        <form method="POST" enctype="multipart/form-data">
+            <input class="file_choose" type="file" name="file">
+            <input class="btn" value="submit!" type="submit">
+        </form>
+    </div>
+
+    <footer>
+        <img class="footer_img" src="https://aidemyexstorage.blob.core.windows.net/aidemycontents/1621500180546399.png" alt="Aidemy">
+        <small>&copy; 2025 Aidemy, inc.</small>   
+    </footer>
+</body>
+</html>
