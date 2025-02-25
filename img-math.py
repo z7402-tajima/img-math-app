@@ -13,9 +13,6 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif']) # アップロードを�
 
 app = Flask(__name__)
 
-# app.secret_key = "your_secret_key_here"  
-# submitボタンを押した際にエラーが出た場合上の行のコメントアウトを削除し、your_secret_key_hereに任意の文字列（例:aidemy)を指定し、再度アプリケーションを実行してください。
-
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -26,13 +23,15 @@ def upload_file():
     pred_answer = "画像を送信してください"
 
     if request.method == 'POST':
-        if 'file' not in request.files: # ファイルデータが含まれていない
+        if 'file' not in request.files:
             flash('ファイルがありません')
-            return redirect(request.url) # リクエスト元のURLにリダイレクト
+            return redirect(request.url)
+
         file = request.files['file']
-        if file.filename == '': # ファイルにファイル名がない
+        if file.filename == '':
             flash('ファイルがありません')
-            return redirect(request.url) # リクエスト元のURLにリダイレクト
+            return redirect(request.url)
+
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename) # サニタイズ: ファイル名にある危険な文字列を無効化
             file.save(os.path.join(UPLOAD_FOLDER, filename))
@@ -46,8 +45,13 @@ def upload_file():
             result = model.predict(data)[0]
             predicted = result.argmax()
             pred_answer = "この画像の数字は[" + classes[predicted] + "]です"
+            
+            # 最後にアップロードされた画像を削除
+            os.remove(filepath)
+        else:
+            flash('有効な画像ファイルの拡張子ではありません')
+            return redirect(request.url) # リクエスト元のURLにリダイレクト
 
-    # 対応づけられたURLのページにhtmlを反映させる(htmlファイルはtemplatesフォルダに置く)
     return render_template("index.html",answer=pred_answer)
 
 if __name__ == "__main__":
