@@ -5,24 +5,29 @@ from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.preprocessing import image
 import numpy as np
 
-classes = ["0","1","2","3","4","5","6","7","8","9"]
+num_classes = ["0","1","2","3","4","5","6","7","8","9"]
+ope_classes = ["0","1","2","3"] # 0:+, 1:-, 2:*, 3:/
 image_size = 28
 
-UPLOAD_FOLDER = "uploads" # アップロードされた画像を保存するフォルダ名
+NUMBERS_FOLDER = "number" # 数字の画像を保持するフォルダ名
+OPERATORS_FOLDER = "operator" # 演算子の画像を保持するフォルダ名
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif']) # アップロードを許可する拡張子
 
 app = Flask(__name__)
-app.secret_key = "53CR3T"
+app.secret_key = "53CR3T" # シークレットキー
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-model = load_model('./number.keras') # 学習済みモデルをロード
+# 学習済みモデルをロード
+number_model = load_model('./number.keras') # 数字
+#operator_model = load_model('./operator.keras') # 演算子
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     pred_answer = "画像を送信してください"
 
+    # 画像送信時
     if request.method == 'POST':
         if 'file' not in request.files:
             flash('ファイルがありません')
@@ -34,17 +39,17 @@ def upload_file():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename) # サニタイズ: ファイル名にある危険な文字列を無効化
-            file.save(os.path.join(UPLOAD_FOLDER, filename))
-            filepath = os.path.join(UPLOAD_FOLDER, filename)
+            file.save(os.path.join(NUMBERS_FOLDER, filename))
+            filepath = os.path.join(NUMBERS_FOLDER, filename)
 
             # 受け取った画像を読み込み、numpyの配列形式に変換
             img = image.load_img(filepath, color_mode='grayscale', target_size=(image_size,image_size))
             img = image.img_to_array(img)
             data = np.array([img])
             # 変換したデータをモデルに渡して予測する
-            result = model.predict(data)[0]
+            result = number_model.predict(data)[0]
             predicted = result.argmax()
-            pred_answer = "この画像の数字は[" + classes[predicted] + "]です"
+            pred_answer = "この画像の数字は[" + num_classes[predicted] + "]です"
             
             # 最後にアップロードされた画像を削除
             os.remove(filepath)
