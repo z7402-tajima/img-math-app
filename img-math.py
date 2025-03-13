@@ -21,19 +21,28 @@ def allowed_file(filename):
 
 # 学習済みモデルをロード
 number_model = load_model('./number.keras') # 数字
-#operator_model = load_model('./operator.keras') # 演算子
+operator_model = load_model('./operator.keras') # 演算子
+
+# name属性名定義
+num_list = ['num1', 'num2']
+ope_list = ['ope1']
+
+# 画像リスト
+num_files = []
+ope_files = []
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
-    pred_answer = "画像を送信してください"
+    # 変数初期化
+    pred_answer = ''
 
     # 画像送信時
     if request.method == 'POST':
-        if 'file' not in request.files:
+        if 'num1' not in request.files:
             flash('ファイルがありません')
             return redirect(request.url)
-
-        file = request.files['file']
+        file = request.files['num1']
+ 
         if file.filename == '':
             flash('ファイル名がありません')
             return redirect(request.url)
@@ -49,13 +58,16 @@ def upload_file():
             # 変換したデータをモデルに渡して予測する
             result = number_model.predict(data)[0]
             predicted = result.argmax()
-            pred_answer = "この画像の数字は[" + num_classes[predicted] + "]です"
+            pred_answer += num_classes[predicted]
             
             # 最後にアップロードされた画像を削除
             os.remove(filepath)
         else:
             flash('画像ファイルではありません')
             return redirect(request.url)
+            
+    else: # GET method
+        pred_answer += "数字および演算子の画像を送信してください"
 
     return render_template("index.html",answer=pred_answer)
 
@@ -65,3 +77,4 @@ if __name__ == "__main__":
     # 外部公開設定時
     port = int(os.environ.get('PORT', 8080))
     app.run(host ='0.0.0.0',port = port)
+# EOF

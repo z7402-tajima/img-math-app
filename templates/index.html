@@ -1,31 +1,33 @@
-<!--空のhtml拡張子ファイルを開き、[!][TAB]の順にキーを押すと以下の基本構造が出力される-->
-<!DOCTYPE html> <!--DOCTYPE宣言: テキストファイルはHTMLだとブラウザに説明するための宣言-->
-<html lang="ja"> <!--日本語"ja"に書き換える-->
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-    <meta charset="UTF-8"> <!--ファイルの文字コードと合わせる-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--きちんと正しく表示させるためのおまじない-->
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"> <!--きちんと正しく表示させるためのおまじない-->
-    <title>Number Classifier</title> <!--ページタイトル（ブラウザのタブ上に現れる）-->
-    <link rel="stylesheet" href="./static/stylesheet.css"> <!--外部CSS読込（自動で補完されない）-->
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>画像で計算</title>
+    <link rel="stylesheet" href="./static/stylesheet.css">
+    <script src="./static/preview.js"></script>
+    </head>
 <body>
-    <header>   
-        <img class="header_img" src="https://aidemyexstorage.blob.core.windows.net/aidemycontents/1621500180546399.png" alt="Aidemy">
-        <a class="header-logo" href="#">Number Classifier</a>
+    <header>
+        <a class="header-logo" href="#">画像で計算</a>
+        <img class="header_img" src="./static/figure.png" alt="Aidemy">
     </header>
 
     <div class="main">    
-        <h2>送信された画像の数字をAIが識別します</h2>
+        <h2>送信された数字と演算子の画像で、AIが計算を行い結果を返します</h2>
         <div class="answer">{{answer}}</div>
         <form method="POST" enctype="multipart/form-data">
-            <input class="file_choose" type="file" name="file">
-            <input class="btn" value="submit!" type="submit">
+            <!-- tableタグを用いて見やすくする -->
+            <label class="file_input"><input type="file" id="num1" name="num1" onchange="preview_num1(this);" />数字画像を選択</label>
+            <div id="preview_num1"></div>
+            <input class="btn" value="画像で計算を実行" type="submit" />
         </form>
         {% with messages = get_flashed_messages() %}
             <div class="errmsg">
             {% for message in messages %}
                 <p>
-                    <font color="red">{{message}}</font>
+                    <div style="color:red;">{{message}}</div>
                 </p>
             {% endfor %}
             </div>
@@ -34,8 +36,7 @@
     
 
     <footer>
-        <img class="footer_img" src="https://aidemyexstorage.blob.core.windows.net/aidemycontents/1621500180546399.png" alt="Aidemy">
-        <small>&copy; 2025 Aidemy, inc.</small>   
+        <small>&copy;z7402-tajima</small>   
     </footer>
 </body>
 </html>
