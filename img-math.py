@@ -20,8 +20,8 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # 学習済みモデルをロード
-number_model = load_model('./number.keras') # 数字
-operator_model = load_model('./operator.keras') # 演算子
+number_model = load_model('./model/number.keras') # 数字
+operator_model = load_model('./model/operator.keras') # 演算子
 
 # name属性名定義
 num_list = ['num1', 'num2']
@@ -57,6 +57,7 @@ def upload_file():
             data = np.array([img])
             # 変換したデータをモデルに渡して予測する
             result = number_model.predict(data)[0]
+            #result = operator_model.predict(data)[0]
             predicted = result.argmax()
             pred_answer += num_classes[predicted]
             
