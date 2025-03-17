@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>画像で計算！？</title>
     <link rel="stylesheet" href="./static/stylesheet.css">
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
     <script src="./static/preview.js"></script>
     </head>
 <body>
@@ -13,29 +14,90 @@
         <img class="header_img" src="./static/figure.png" alt="Aidemy">
     </header>
 
-    <div class="main">    
-        <h1>画像で計算！？</h1>
+    <div class="main">
         <div class="answer">{{answer}}</div>
-        <form method="POST" enctype="multipart/form-data">
-            <!-- tableタグを用いて見やすくする -->
-            <label class="file_input"><input type="file" id="num1" name="num1" onchange="preview_num1(this);" />数字画像を選択</label>
-            <div id="preview_num1"></div>
-            <input class="btn" value="画像で計算を実行" type="submit" />
-        </form>
         {% with messages = get_flashed_messages() %}
             <div class="errmsg">
             {% for message in messages %}
-                <p>
-                    <div style="color:red;">{{message}}</div>
-                </p>
+                <p>{{message}}</p>
             {% endfor %}
             </div>
         {% endwith %}
+        <form method="POST" enctype="multipart/form-data">
+            <table>
+                <caption>
+                    <h2>画像で計算！？</h2>
+                </caption>
+                <thead>
+                    <tr>
+                        <th scope="col">枚数</th>
+                        <th scope="col">アップロード</th>
+                        <th scope="col">プレビュー</th>
+                        <th scope="col">数字／演算子</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1枚目</th>
+                        <td>
+                            <label class="file_input"><input type="file" id="num1" name="num1_img" onchange="preview(this, '#preview_num1');" />選択</label>
+                        </td>
+                        <td>
+                            <div id="preview_num1" name="preview"></div>
+                        </td>
+                        <td>
+                            <input type="radio" id="num1-1" name="num1_rdo" value="1" checked="checked" />
+                            <label for="num1-1">数字</label>&nbsp;
+                            <input type="radio" id="num1-2" name="num1_rdo" value="2" />
+                            <label for="num1-2">演算子</label>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <th scope="row">2枚目</th>
+                        <td>
+                            <label class="file_input"><input type="file" id="ope1" name="ope1_img" onchange="preview(this, '#preview_ope1');" />選択</label>
+                        </td>
+                        <td>
+                            <div id="preview_ope1" name="preview"></div>
+                        </td>
+                        <td>
+                            <input type="radio" id="ope1-1" name="ope1_rdo" value="1" />
+                            <label for="ope1-1">数字</label>&nbsp;
+                            <input type="radio" id="ope1-2" name="ope1_rdo" value="2" checked="checked" />
+                            <label for="ope1-1">演算子</label>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <th scope="row">3枚目</th>
+                        <td>
+                            <label class="file_input"><input type="file" id="num2" name="num2_img" onchange="preview(this, '#preview_num2');" />選択</label>
+                        </td>
+                        <td>
+                            <div id="preview_num2" name="preview"></div>
+                        </td>
+                        <td>
+                            <input type="radio" id="num2-1" name="num2_rdo" value="1" checked="checked" />
+                            <label for="num2-1">数字</label>&nbsp;
+                            <input type="radio" id="num2-2" name="num2_rdo" value="2" />
+                            <label for="num2-2">演算子</label>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4"><input class="btn" value="選択した画像で計算を実行" type="submit" /></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
     </div>
-    
 
     <footer>
-        <small>&copy;z7402-tajima</small>   
+        <small>&copy;z7402-tajima</small>
     </footer>
 </body>
 </html>

@@ -38,11 +38,11 @@ def upload_file():
 
     # 画像送信時
     if request.method == 'POST':
-        if 'num1' not in request.files:
+        if 'num1_img' not in request.files:
             flash('ファイルがありません')
             return redirect(request.url)
-        file = request.files['num1']
- 
+        file = request.files['num1_img']
+
         if file.filename == '':
             flash('ファイル名がありません')
             return redirect(request.url)
@@ -60,15 +60,15 @@ def upload_file():
             #result = operator_model.predict(data)[0]
             predicted = result.argmax()
             pred_answer += num_classes[predicted]
-            
+
             # 最後にアップロードされた画像を削除
             os.remove(filepath)
         else:
             flash('画像ファイルではありません')
             return redirect(request.url)
-            
+
     else: # GET method
-        pred_answer += "数字および演算子の画像を送信してください"
+        pred_answer += "ここに計算結果が表示されます"
 
     return render_template("index.html",answer=pred_answer)
 
