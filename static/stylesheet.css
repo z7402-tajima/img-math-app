@@ -1,18 +1,18 @@
 header {
     background-color: #8855aa;
-    height: 60px;
+    height: 88px;
     margin: -8px;
     text-align: center;
 }
 
 .header_img {
-    height: 28px;
-    margin: 16px 25px;
+    height: 56px;
+    margin: 16px 0px;
 }
 
 .main {
     text-align: center;
-    margin: 38px 0px;
+    margin: 18px 0px;
 }
 
 h1 {
@@ -22,6 +22,7 @@ h1 {
 
 .answer {
     color: #444444;
+    margin: 20px 0px 28px 0px;
 }
 
 table {
@@ -36,10 +37,12 @@ th, td {
 .preview {
     width: 42px;
     height: 42px;
+    margin-bottom: -7px;
 }
 
 .errmsg {
     color: #FF0000;
+    margin: 20px 0px 28px 0px;
 }
 
 footer {

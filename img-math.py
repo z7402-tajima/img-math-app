@@ -24,8 +24,8 @@ number_model = load_model('./model/number.keras') # 数字
 operator_model = load_model('./model/operator.keras') # 演算子
 
 # name属性名定義
-num_list = ['num1', 'num2']
-ope_list = ['ope1']
+img_list = ['img1', 'img2', 'img3']
+rdo_img_list = ['rdo_img1', 'rdo_img2', 'rdo_img3']
 
 # 画像リスト
 num_files = []
@@ -38,13 +38,13 @@ def upload_file():
 
     # 画像送信時
     if request.method == 'POST':
-        if 'num1_img' not in request.files:
+        if 'img1' not in request.files:
             flash('ファイルがありません')
             return redirect(request.url)
-        file = request.files['num1_img']
+        file = request.files['img1']
 
         if file.filename == '':
-            flash('ファイル名がありません')
+            flash('ファイルがありません')
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename) # サニタイズ: ファイル名にある危険な文字列を無効化

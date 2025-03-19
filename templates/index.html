@@ -15,14 +15,6 @@
     </header>
 
     <div class="main">
-        <div class="answer">{{answer}}</div>
-        {% with messages = get_flashed_messages() %}
-            <div class="errmsg">
-            {% for message in messages %}
-                <p>{{message}}</p>
-            {% endfor %}
-            </div>
-        {% endwith %}
         <form method="POST" enctype="multipart/form-data">
             <table>
                 <caption>
@@ -40,16 +32,16 @@
                     <tr>
                         <th scope="row">1枚目</th>
                         <td>
-                            <label class="file_input"><input type="file" id="num1" name="num1_img" onchange="preview(this, '#preview_num1');" />選択</label>
+                            <label class="file_input"><input type="file" id="img1" name="img1" onchange="preview(this, '#preview_img1');" />選択</label>
                         </td>
                         <td>
-                            <div id="preview_num1" name="preview"></div>
+                            <div id="preview_img1">未選択</div>
                         </td>
                         <td>
-                            <input type="radio" id="num1-1" name="num1_rdo" value="1" checked="checked" />
-                            <label for="num1-1">数字</label>&nbsp;
-                            <input type="radio" id="num1-2" name="num1_rdo" value="2" />
-                            <label for="num1-2">演算子</label>
+                            <input type="radio" id="img1-1" name="rdo_img1" value="1" checked="checked" />
+                            <label for="img1-1">数字</label>&nbsp;
+                            <input type="radio" id="img1-2" name="rdo_img1" value="2" />
+                            <label for="img1-2">演算子</label>
                         </td>
                     </tr>
                 </tbody>
@@ -57,16 +49,16 @@
                     <tr>
                         <th scope="row">2枚目</th>
                         <td>
-                            <label class="file_input"><input type="file" id="ope1" name="ope1_img" onchange="preview(this, '#preview_ope1');" />選択</label>
+                            <label class="file_input"><input type="file" id="img2" name="img2" onchange="preview(this, '#preview_img2');" />選択</label>
                         </td>
                         <td>
-                            <div id="preview_ope1" name="preview"></div>
+                            <div id="preview_img2">未選択</div>
                         </td>
                         <td>
-                            <input type="radio" id="ope1-1" name="ope1_rdo" value="1" />
-                            <label for="ope1-1">数字</label>&nbsp;
-                            <input type="radio" id="ope1-2" name="ope1_rdo" value="2" checked="checked" />
-                            <label for="ope1-1">演算子</label>
+                            <input type="radio" id="img2-1" name="rdo_img2" value="1" />
+                            <label for="img2-1">数字</label>&nbsp;
+                            <input type="radio" id="img2-2" name="rdo_img2" value="2" checked="checked" />
+                            <label for="img2-1">演算子</label>
                         </td>
                     </tr>
                 </tbody>
@@ -74,16 +66,16 @@
                     <tr>
                         <th scope="row">3枚目</th>
                         <td>
-                            <label class="file_input"><input type="file" id="num2" name="num2_img" onchange="preview(this, '#preview_num2');" />選択</label>
+                            <label class="file_input"><input type="file" id="img3" name="img3" onchange="preview(this, '#preview_img3');" />選択</label>
                         </td>
                         <td>
-                            <div id="preview_num2" name="preview"></div>
+                            <div id="preview_img3">未選択</div>
                         </td>
                         <td>
-                            <input type="radio" id="num2-1" name="num2_rdo" value="1" checked="checked" />
-                            <label for="num2-1">数字</label>&nbsp;
-                            <input type="radio" id="num2-2" name="num2_rdo" value="2" />
-                            <label for="num2-2">演算子</label>
+                            <input type="radio" id="img3-1" name="rdo_img3" value="1" checked="checked" />
+                            <label for="img3-1">数字</label>&nbsp;
+                            <input type="radio" id="img3-2" name="rdo_img3" value="2" />
+                            <label for="img3-2">演算子</label>
                         </td>
                     </tr>
                 </tbody>
@@ -94,6 +86,17 @@
                 </tfoot>
             </table>
         </form>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="errmsg">
+            {% for message in messages %}
+                <p>{{message}}</p>
+            {% endfor %}
+            </div>
+        {% else %}
+            <div class="answer">{{answer}}</div>
+        {% endif %}
+        {% endwith %}
     </div>
 
     <footer>
