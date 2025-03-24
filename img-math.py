@@ -21,19 +21,19 @@ allowed_extensions = set(["png", "jpg", "jpeg", "gif"]) # アップロードを�
 number_model = load_model("./model/number.keras") # 数字
 operator_model = load_model("./model/operator.keras") # 演算子
 
-# 予測リスト：[種別, 値]の形式とし、リストinリストの形式で格納
-# 種別：1:数字、2:演算子
-# 値：0～9 (演算子の場合、0:＋, 1:－, 2:×, 3:÷)
-pred_list = []
-
 @app.route("/", methods=["GET", "POST"])
 def upload_file():
-    # 変数初期化
-    pred_answer = ""
+    answer = ""
+
+    # 予測リスト：[種別, 値]の形式とし、リストinリストの形式で格納
+    # 種別：1:数字、2:演算子
+    # 値：0～9 (演算子の場合、0:＋, 1:－, 2:×, 3:÷)
+    pred_list = []
 
     # 画像送信時
     if request.method == "POST":
         i = 0 # インデックス
+        pred_answer = ""
 
         for img in img_list:
             i += 1
@@ -66,20 +66,20 @@ def upload_file():
                 data = np.array([img])
 
                 # 変換したデータをモデルに渡して予測する
-                if kind =="1":
+                if kind == "1":
                     # 数字モデルで予測
                     result = number_model.predict(data)[0]
                     predicted = result.argmax()
                     pred_answer += num_classes[predicted]
                     # 予測リストに格納
-                    pred_list.append([kind, predicted])
-                else: # if kind =="2":
+                    pred_list.append([int(kind), int(predicted)])
+                else:
                     # 演算子モデルで予測
                     result = operator_model.predict(data)[0]
                     predicted = result.argmax()
                     pred_answer += ope_classes[predicted]
                     # 予測リストに格納
-                    pred_list.append([kind, predicted])
+                    pred_list.append([int(kind), int(predicted)])
 
                 # 一時的にアップロードされた画像を削除
                 os.remove(filepath)
@@ -88,17 +88,66 @@ def upload_file():
                 return redirect(request.url)
             pred_answer += " "
 
-        # 計算を実施
-        pred_answer += "= (todo)"
+        # 計算処理を実施
+        cal = calculate(pred_list)
+        answer = pred_answer + "= " + cal
 
     else: # GET method
-        pred_answer += "ここに計算結果が表示されます"
+        answer += "ここに計算結果が表示されます"
 
-    return render_template("index.html",answer=pred_answer)
+    return render_template("index.html",answer=answer)
 
 # 許可された画像ファイルかをチェック
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in allowed_extensions
+
+# 計算処理
+def calculate(pred_list):
+    answer = ""    # 解答
+    num = 0        # 現在の数値
+    num_list = []  # 数字のリスト
+    ope_list = []  # 演算子のリスト
+    isDupFlg = True # 演算子重複フラグ
+
+    try:
+        # 予測リストをもとに、数字と演算子のリストに分ける
+        for pred in pred_list:
+            if pred[0] == 1:
+                # 数字が連続している場合は、1つの数値とみなす
+                num = num * 10 + pred[1]
+                isDupFlg = False # 重複フラグをオフ
+            else:
+                if isDupFlg:
+                    # 演算子が連続で設定されている場合（先頭にある場合も連続とみなす）
+                    raise ValueError("演算子が先頭もしくは連続で設定されています")
+                else:
+                    num_list.append(num)
+                    ope_list.append(pred[1])
+                    num = 0
+                isDupFlg = True # 重複フラグをオン
+
+        # 末尾が演算子でない場合、最後の数値をリストに加える
+        if not isDupFlg:
+            num_list.append(num)
+
+        # 数字と演算子のリスト要素数の整合性チェック
+        if len(num_list) - len(ope_list) != 1:
+            raise ValueError("式が成立していません")
+        else:
+            i = 0
+            j = 0
+            # Todo
+    except ZeroDivisionError as e:
+        answer = "ゼロ除算があります"
+    except ValueError as e:
+        answer = str(e)
+    # 汎用例外処理は行わない（開発時のみチェック）
+    #except Exception as e:
+    #    answer = str(e)
+    else:
+        answer = "Todo"
+    finally:
+        return answer
 
 # メイン
 if __name__ == "__main__":
